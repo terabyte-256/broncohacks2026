@@ -1,6 +1,5 @@
-@import 'tailwindcss';
-
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+@import 'tailwindcss';
 
 @theme {
   --font-sans: 'DM Sans', 'Segoe UI', sans-serif;
@@ -91,4 +90,47 @@ h5 {
   outline: 2px solid var(--color-brand);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* Smooth transitions */
+a, button {
+  transition: all 0.2s ease;
+}
+
+/* Card hover lift effect */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--color-brand-soft);
+  color: var(--color-brand-strong);
+}
+
+/* Improved input focus */
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px var(--color-brand-soft);
+}
+
+/* Skeleton loading animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-muted) 25%, var(--color-surface) 50%, var(--color-muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }

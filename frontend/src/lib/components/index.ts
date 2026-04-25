@@ -6,4 +6,5 @@ export { default as Input } from './Input.svelte';
 export { default as ProgressBar } from './ProgressBar.svelte';
 export { default as QuizOption } from './QuizOption.svelte';
 export { default as SectionHeader } from './SectionHeader.svelte';
+export { default as StatsCard } from './StatsCard.svelte';
 export { default as Textarea } from './Textarea.svelte';
