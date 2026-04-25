@@ -20,6 +20,7 @@
 
 	const navItems = [
 		{ href: '/', label: 'Dashboard', match: '/' },
+		{ href: '/modules', label: 'Modules', match: '/modules' },
 		{ href: '/tracks', label: 'Tracks', match: '/tracks' },
 		{ href: '/quiz', label: 'Quiz', match: '/quiz' },
 		{ href: '/message-checker', label: 'Message Checker', match: '/message-checker' },
