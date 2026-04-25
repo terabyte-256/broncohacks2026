@@ -219,7 +219,7 @@ label={option.label}
 description={option.text}
 selected={currentOptionId() === option.id}
 disabled={submitting || $submissionState.status === 'success'}
-on:select={() => selectOption(option.id)}
+onselect={() => selectOption(option.id)}
 />
 {/each}
 </fieldset>
