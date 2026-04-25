@@ -1,48 +1,94 @@
 @import 'tailwindcss';
 
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+
 @theme {
---font-sans: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'DM Sans', 'Segoe UI', sans-serif;
 
---color-canvas: #f5f7fb;
---color-surface: #ffffff;
---color-muted: #eef2f8;
---color-border: #dce3ed;
+  /* ── Surfaces ── */
+  --color-canvas: #0e0f13;
+  --color-surface: #14161d;
+  --color-muted: #1a1d27;
+  --color-border: rgba(255, 255, 255, 0.08);
 
---color-text: #101828;
---color-text-muted: #667085;
+  /* ── Text ── */
+  --color-text: #e8e9f0;
+  --color-text-muted: #7c7f94;
 
---color-brand: #475467;
---color-brand-strong: #344054;
---color-brand-soft: #eef4ff;
---color-brand-border: #d0dcff;
+  /* ── Brand / Accent (purple) ── */
+  --color-brand: #6c63ff;
+  --color-brand-strong: #7d75ff;
+  --color-brand-soft: rgba(108, 99, 255, 0.15);
+  --color-brand-border: rgba(108, 99, 255, 0.30);
 
---color-success: #1d7a48;
---color-success-soft: #eaf9f0;
---color-success-border: #bfe9cf;
+  /* ── Success (teal/green) ── */
+  --color-success: #00d4aa;
+  --color-success-soft: rgba(0, 212, 170, 0.10);
+  --color-success-border: rgba(0, 212, 170, 0.25);
 
---color-warning: #9a6700;
---color-warning-soft: #fff8e8;
---color-warning-border: #f6d8a5;
+  /* ── Warning (amber) ── */
+  --color-warning: #ffc35a;
+  --color-warning-soft: rgba(255, 195, 90, 0.10);
+  --color-warning-border: rgba(255, 195, 90, 0.25);
 
---color-danger: #b42318;
---color-danger-strong: #912018;
---color-danger-soft: #fff1f0;
---color-danger-border: #ffd4d0;
+  /* ── Danger (red) ── */
+  --color-danger: #ff6b6b;
+  --color-danger-strong: #ff4444;
+  --color-danger-soft: rgba(255, 107, 107, 0.10);
+  --color-danger-border: rgba(255, 107, 107, 0.25);
+
+  /* ── Info (blue) ── */
+  --color-info: #60a5fa;
+  --color-info-soft: rgba(96, 165, 250, 0.10);
+  --color-info-border: rgba(96, 165, 250, 0.25);
+
+  /* ── Neutral ── */
+  --color-neutral: #7c7f94;
+  --color-neutral-soft: rgba(255, 255, 255, 0.06);
+  --color-neutral-border: rgba(255, 255, 255, 0.12);
 }
 
 :root {
-font-family: var(--font-sans);
-color: var(--color-text);
-background-color: var(--color-canvas);
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background-color: var(--color-canvas);
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-margin: 0;
-min-height: 100vh;
-background-color: var(--color-canvas);
-color: var(--color-text);
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-canvas);
+  color: var(--color-text);
 }
 
 * {
-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Syne', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
