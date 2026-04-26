@@ -139,6 +139,47 @@
 		);
 	}
 
+	// ── Mini Demo state ──────────────────────────────────────────────────────
+	// XSS demo
+	let xssInput = $state("");
+	const xssHasScript = $derived(/<script/i.test(xssInput));
+
+	// SQL Injection demo
+	let sqlUsername = $state("");
+	let sqlPassword = $state("");
+	let sqlLoginResult = $state<"idle" | "injected" | "failed">("idle");
+	const sqlQuery = $derived(
+		`SELECT * FROM users WHERE username = '${sqlUsername}' AND password = '${sqlPassword}'`,
+	);
+	const sqlIsInjected = $derived(
+		/'\s*or\s*'?1'?\s*=\s*'?1/i.test(sqlUsername) ||
+		/'\s*or\s*'?1'?\s*=\s*'?1/i.test(sqlPassword) ||
+		/--/.test(sqlUsername) ||
+		/--/.test(sqlPassword),
+	);
+
+	function handleSqlLogin() {
+		sqlLoginResult = sqlIsInjected ? "injected" : "failed";
+	}
+
+	function resetSqlDemo() {
+		sqlUsername = "";
+		sqlPassword = "";
+		sqlLoginResult = "idle";
+	}
+
+	// CSRF demo
+	let csrfTriggered = $state(false);
+
+	function triggerCsrf() {
+		csrfTriggered = true;
+	}
+
+	function resetCsrfDemo() {
+		csrfTriggered = false;
+	}
+	// ────────────────────────────────────────────────────────────────────────
+
 	async function loadModule() {
 		moduleState.setLoading();
 		const moduleId = Number.parseInt(
@@ -394,6 +435,228 @@
 					{lesson.example}
 				</div>
 			</Card>
+
+			<!-- ══ MINI DEMO ══ -->
+			{#if mod.topicKey === "xss"}
+				<Card>
+					<p class="mb-3 text-xs font-semibold uppercase tracking-widest text-brand-strong">
+						Mini Demo
+					</p>
+					<p class="mb-3 text-sm text-text-muted">
+						Type something below. If you include a
+						<code class="rounded bg-muted px-1 py-0.5 text-xs font-mono text-text">&lt;script&gt;</code>
+						tag, the vulnerable renderer will detect it.
+					</p>
+
+					<div class="space-y-3">
+						<input
+							type="text"
+							bind:value={xssInput}
+							placeholder='Try: <script>alert("XSS")</script>'
+							class="w-full rounded-md border border-border bg-muted px-3 py-2 text-sm text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand"
+						/>
+
+						<!-- Vulnerable renderer -->
+						<div class="space-y-1">
+							<p class="text-xs font-medium text-text-muted">
+								Vulnerable output
+								<span class="ml-1 rounded bg-red-900/30 px-1.5 py-0.5 text-xs text-red-400">element.innerHTML = userInput</span>
+							</p>
+							<div
+								class="min-h-9 rounded-md border px-3 py-2 text-sm transition-all duration-300
+									{xssHasScript
+										? 'animate-pulse border-red-500 bg-red-900/20 text-red-400'
+										: 'border-border bg-muted text-text'}"
+							>
+								{#if xssHasScript}
+									⚠️ Script executed (XSS attack)
+								{:else if xssInput}
+									{@html xssInput}
+								{:else}
+									<span class="text-text-muted italic">Output renders here…</span>
+								{/if}
+							</div>
+						</div>
+
+						<!-- Secure renderer -->
+						<div class="space-y-1">
+							<p class="text-xs font-medium text-text-muted">
+								Secure output
+								<span class="ml-1 rounded bg-green-900/30 px-1.5 py-0.5 text-xs text-green-400">element.textContent = userInput</span>
+							</p>
+							<div class="min-h-9 rounded-md border border-border bg-muted px-3 py-2 text-sm text-text break-all">
+								{#if xssInput}
+									{xssInput}
+								{:else}
+									<span class="text-text-muted italic">Output renders here…</span>
+								{/if}
+							</div>
+						</div>
+
+						<!-- Code comparison -->
+						<div class="grid gap-2 sm:grid-cols-2">
+							<div class="rounded-md bg-red-900/20 p-3">
+								<p class="mb-1 text-xs font-semibold text-red-400">❌ Vulnerable</p>
+								<code class="text-xs text-red-300">element.innerHTML = userInput</code>
+							</div>
+							<div class="rounded-md bg-green-900/20 p-3">
+								<p class="mb-1 text-xs font-semibold text-green-400">✓ Secure fix</p>
+								<code class="text-xs text-green-300">element.textContent = userInput</code>
+							</div>
+						</div>
+					</div>
+				</Card>
+
+			{:else if mod.topicKey === "sql-injection"}
+				<Card>
+					<p class="mb-3 text-xs font-semibold uppercase tracking-widest text-brand-strong">
+						Mini Demo
+					</p>
+					<p class="mb-3 text-sm text-text-muted">
+						Try logging in with a normal username, then try:
+						<code class="rounded bg-muted px-1 py-0.5 text-xs font-mono text-text">admin' OR '1'='1</code>
+						as the username.
+					</p>
+
+					<div class="space-y-3">
+						<div class="grid gap-2 sm:grid-cols-2">
+							<div class="space-y-1">
+								<label class="text-xs font-medium text-text-muted" for="sql-username">Username</label>
+								<input
+									id="sql-username"
+									type="text"
+									bind:value={sqlUsername}
+									placeholder="e.g. admin"
+									class="w-full rounded-md border border-border bg-muted px-3 py-2 text-sm text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand"
+								/>
+							</div>
+							<div class="space-y-1">
+								<label class="text-xs font-medium text-text-muted" for="sql-password">Password</label>
+								<input
+									id="sql-password"
+									type="text"
+									bind:value={sqlPassword}
+									placeholder="e.g. hunter2"
+									class="w-full rounded-md border border-border bg-muted px-3 py-2 text-sm text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-brand"
+								/>
+							</div>
+						</div>
+
+						<!-- Live query preview -->
+						<div class="rounded-md border border-border bg-muted p-3">
+							<p class="mb-1 text-xs font-medium text-text-muted">Generated SQL query:</p>
+							<code
+								class="break-all text-xs transition-colors duration-300
+									{sqlIsInjected ? 'text-red-400' : 'text-text'}"
+							>
+								{sqlQuery}
+							</code>
+						</div>
+
+						<div class="flex gap-2">
+							<button
+								onclick={handleSqlLogin}
+								class="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand/80 transition-colors"
+							>
+								Login
+							</button>
+							<button
+								onclick={resetSqlDemo}
+								class="rounded-md border border-border px-4 py-2 text-sm font-medium text-text-muted hover:text-text transition-colors"
+							>
+								Reset
+							</button>
+						</div>
+
+						{#if sqlLoginResult === "injected"}
+							<div class="animate-pulse rounded-md border border-red-500 bg-red-900/20 px-4 py-3 text-sm font-semibold text-red-400">
+								🚨 ACCESS GRANTED (SQL Injection) — the WHERE clause always evaluates to true.
+							</div>
+						{:else if sqlLoginResult === "failed"}
+							<div class="rounded-md border border-border bg-muted px-4 py-3 text-sm text-text-muted">
+								❌ Login failed — invalid credentials.
+							</div>
+						{/if}
+
+						<!-- Code comparison -->
+						<div class="grid gap-2 sm:grid-cols-2">
+							<div class="rounded-md bg-red-900/20 p-3">
+								<p class="mb-1 text-xs font-semibold text-red-400">❌ Vulnerable</p>
+								<code class="text-xs text-red-300 break-all">"SELECT * FROM users WHERE username = '" + username + "'"</code>
+							</div>
+							<div class="rounded-md bg-green-900/20 p-3">
+								<p class="mb-1 text-xs font-semibold text-green-400">✓ Secure fix</p>
+								<code class="text-xs text-green-300">cursor.execute("SELECT * FROM users WHERE username = %s", (username,))</code>
+							</div>
+						</div>
+					</div>
+				</Card>
+
+			{:else if mod.topicKey === "csrf"}
+				<Card>
+					<p class="mb-3 text-xs font-semibold uppercase tracking-widest text-brand-strong">
+						Mini Demo
+					</p>
+					<p class="mb-3 text-sm text-text-muted">
+						Imagine you're logged into your bank. Clicking the button below simulates visiting
+						a malicious page that fires a forged request on your behalf.
+					</p>
+
+					<div class="space-y-3">
+						<!-- Simulated "malicious page" -->
+						<div class="rounded-md border border-border bg-muted p-4 text-sm">
+							<p class="mb-1 text-xs font-medium text-text-muted">🌐 evil-site.com</p>
+							<p class="text-text-muted">
+								"Congratulations! You've won a prize. Click below to claim."
+							</p>
+							<button
+								onclick={triggerCsrf}
+								class="mt-3 rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 transition-colors"
+							>
+								Visit malicious page
+							</button>
+						</div>
+
+						{#if csrfTriggered}
+							<div class="animate-pulse rounded-md border border-red-500 bg-red-900/20 px-4 py-3 space-y-1">
+								<p class="text-sm font-semibold text-red-400">
+									⚠️ Unauthorized request sent (CSRF)
+								</p>
+								<p class="text-xs text-red-300">
+									Your browser automatically attached your session cookie to a
+									<code class="rounded bg-red-900/30 px-1">POST /transfer?to=attacker&amp;amount=1000</code>
+									request — without your knowledge.
+								</p>
+							</div>
+
+							<div class="rounded-md border border-border bg-muted px-4 py-3 text-xs text-text-muted space-y-1">
+								<p class="font-medium text-text">Why does this work?</p>
+								<p>Browsers automatically send cookies for a domain on every request to that domain, regardless of which page triggered the request.</p>
+							</div>
+
+							<button
+								onclick={resetCsrfDemo}
+								class="rounded-md border border-border px-4 py-2 text-sm font-medium text-text-muted hover:text-text transition-colors"
+							>
+								Reset demo
+							</button>
+						{/if}
+
+						<!-- Code comparison -->
+						<div class="grid gap-2 sm:grid-cols-2">
+							<div class="rounded-md bg-red-900/20 p-3">
+								<p class="mb-1 text-xs font-semibold text-red-400">❌ No protection</p>
+								<code class="text-xs text-red-300">Set-Cookie: session=abc123</code>
+							</div>
+							<div class="rounded-md bg-green-900/20 p-3">
+								<p class="mb-1 text-xs font-semibold text-green-400">✓ Secure fix</p>
+								<code class="text-xs text-green-300 break-all">Set-Cookie: session=abc123; SameSite=Strict<br/>+ CSRF token in every form</code>
+							</div>
+						</div>
+					</div>
+				</Card>
+			{/if}
+			<!-- ══ END MINI DEMO ══ -->
 
 			<Card>
 				<p
