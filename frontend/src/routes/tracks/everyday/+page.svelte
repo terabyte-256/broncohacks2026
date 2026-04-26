@@ -7,68 +7,58 @@
 	} from "$lib/components";
 	import { cn, uiTokens } from "$lib/theme";
 
-	// Developer Security modules with categories
+	// Everyday Security modules with categories
 	const categories = [
 		{
-			id: 'web-vulnerabilities',
-			title: 'Web Vulnerabilities',
-			description: 'Understand common attack vectors in web applications',
+			id: 'threats',
+			title: 'Recognizing Threats',
+			description: 'Learn to identify common online attacks targeting everyday users',
 			modules: [
 				{
-					id: 'xss',
-					title: 'Cross-Site Scripting (XSS)',
-					description: 'Learn how attackers inject malicious scripts and how to prevent it',
-					icon: '💉',
+					id: 'phishing',
+					title: 'Phishing Attacks',
+					description: 'Identify fake emails, SMS, and social engineering attempts',
+					icon: '🎣',
 					difficulty: 'Beginner',
 					estimatedTime: '15 min',
-					href: '/modules/xss',
+					href: '/modules/phishing',
 					available: true
 				},
 				{
-					id: 'sql-injection',
-					title: 'SQL Injection',
-					description: 'Understand how attackers manipulate database queries',
-					icon: '🗄️',
-					difficulty: 'Intermediate',
-					estimatedTime: '20 min',
-					href: '/modules/sql-injection',
-					available: true
-				},
-				{
-					id: 'csrf',
-					title: 'Cross-Site Request Forgery',
-					description: 'Learn how attackers trick users into unwanted actions',
-					icon: '🎯',
-					difficulty: 'Intermediate',
+					id: 'social-engineering',
+					title: 'Social Engineering',
+					description: 'Recognize manipulation tactics used by attackers',
+					icon: '🎭',
+					difficulty: 'Beginner',
 					estimatedTime: '15 min',
-					href: '/modules/csrf',
-					available: true
+					href: '/modules/social-engineering',
+					available: false
 				}
 			]
 		},
 		{
-			id: 'secure-development',
-			title: 'Secure Development',
-			description: 'Best practices for building secure applications',
+			id: 'best-practices',
+			title: 'Best Practices',
+			description: 'Essential habits for staying safe online',
 			modules: [
 				{
-					id: 'auth-security',
-					title: 'Authentication Security',
-					description: 'Implement secure login flows and session management',
-					icon: '🔑',
-					difficulty: 'Intermediate',
-					estimatedTime: '25 min',
-					href: '/modules/auth-security',
-					available: false
+					id: 'password-security',
+					title: 'Password Security',
+					description: 'Create strong passwords and use two-factor authentication',
+					icon: '🔐',
+					difficulty: 'Beginner',
+					estimatedTime: '15 min',
+					href: '/modules/password-security',
+					available: true
 				},
 				{
-					id: 'api-security',
-					title: 'API Security',
-					description: 'Secure your REST and GraphQL endpoints',
-					icon: '🔌',
-					difficulty: 'Advanced',
-					estimatedTime: '30 min',
-					href: '/modules/api-security',
+					id: 'safe-browsing',
+					title: 'Safe Browsing',
+					description: 'Identify malicious websites and browse securely',
+					icon: '🌐',
+					difficulty: 'Beginner',
+					estimatedTime: '10 min',
+					href: '/modules/safe-browsing',
 					available: false
 				}
 			]
@@ -83,8 +73,8 @@
 </script>
 
 <SectionHeader
-	title="Developer Security"
-	subtitle="Learn to build secure applications and protect against common web vulnerabilities."
+	title="Everyday Security"
+	subtitle="Protect yourself from common online threats with practical skills anyone can learn."
 >
 	{#snippet actions()}
 		<Button variant="secondary" href="/tracks">All Tracks</Button>
@@ -92,14 +82,14 @@
 </SectionHeader>
 
 <!-- Track Progress Overview -->
-<Card className="mb-8 bg-brand-soft border-brand-border">
+<Card className="mb-8 bg-success-soft border-success-border">
 	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 		<div>
-			<p class="text-sm font-medium text-brand">Your Progress</p>
-			<p class="text-2xl font-bold text-brand-strong">3 of 5 modules available</p>
+			<p class="text-sm font-medium text-success">Your Progress</p>
+			<p class="text-2xl font-bold text-success">2 of 4 modules available</p>
 		</div>
 		<div class="flex items-center gap-2">
-			<Badge variant="brand">Intermediate Track</Badge>
+			<Badge variant="success">Beginner Friendly</Badge>
 		</div>
 	</div>
 </Card>
@@ -113,7 +103,7 @@
 				<p class="text-sm text-text-muted">{category.description}</p>
 			</div>
 			
-			<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			<div class="grid gap-4 sm:grid-cols-2">
 				{#each category.modules as module (module.id)}
 					{#if module.available}
 						<a
@@ -166,8 +156,8 @@
 		<div>
 			<h3 class="font-semibold text-text mb-1">Recommended Learning Path</h3>
 			<p class="text-sm text-text-muted">
-				Start with XSS to understand client-side attacks, then move to SQL Injection for server-side vulnerabilities. 
-				CSRF builds on both concepts. Complete all three to unlock advanced modules.
+				Start with Password Security to establish strong foundations, then learn to spot Phishing attacks. 
+				These skills work together to keep you safe in your daily online activities.
 			</p>
 		</div>
 	</div>
