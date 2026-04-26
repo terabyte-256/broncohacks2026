@@ -130,8 +130,7 @@ db.users.insert({
 const hash = md5(user.password);
 
 // GOOD - Proper password hashing
-import bcrypt from 'bcrypt';
-
+// Using bcrypt library
 const saltRounds = 12;
 const hash = await bcrypt.hash(password, saltRounds);
 

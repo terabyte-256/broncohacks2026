@@ -9,6 +9,7 @@
 		offColor?: 'danger' | 'warning' | 'muted';
 		disabled?: boolean;
 		className?: string;
+		ariaLabel?: string;
 		onchange?: (checked: boolean) => void;
 	}
 
@@ -20,6 +21,7 @@
 		offColor = 'danger',
 		disabled = false,
 		className = '',
+		ariaLabel = 'Toggle',
 		onchange
 	}: Props = $props();
 
@@ -59,6 +61,7 @@
 		type="button"
 		role="switch"
 		aria-checked={checked}
+		aria-label={ariaLabel}
 		{disabled}
 		class={cn(
 			"relative w-14 h-7 rounded-full transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-canvas",
@@ -73,4 +76,3 @@
 		)}></span>
 	</button>
 </div>
-</script>
