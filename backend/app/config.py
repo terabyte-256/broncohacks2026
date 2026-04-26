@@ -22,3 +22,9 @@ class Config:
     DEFAULT_USER_ID = int(os.getenv("DEFAULT_USER_ID", "1"))
     CORS_ORIGINS = _parse_cors_origins.__func__(os.getenv("CORS_ORIGINS", ""))
     JSON_SORT_KEYS = False
+    
+    # Session configuration for OAuth
+    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-change-in-production")
+    SESSION_COOKIE_SECURE = os.getenv("FLASK_ENV", "development") == "production"
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
