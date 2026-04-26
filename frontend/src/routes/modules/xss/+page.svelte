@@ -82,6 +82,7 @@
 	icon="💉"
 	difficulty="Beginner"
 	estimatedTime="15 min"
+	track="developer"
 >
 	<!-- What is XSS -->
 	<section>

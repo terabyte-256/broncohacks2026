@@ -98,6 +98,7 @@ db.execute(query, [username, password]);`;
 	icon="🗄️"
 	difficulty="Intermediate"
 	estimatedTime="20 min"
+	track="developer"
 >
 	<!-- What is SQL Injection -->
 	<section>

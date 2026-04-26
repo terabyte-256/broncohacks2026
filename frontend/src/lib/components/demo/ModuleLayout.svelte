@@ -9,18 +9,24 @@
 		icon: string;
 		difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
 		estimatedTime: string;
+		track?: 'everyday' | 'developer';
 		progress?: number;
 		className?: string;
 		children?: Snippet;
 		quiz?: Snippet;
 	}
 
-	let { title, subtitle, icon, difficulty, estimatedTime, progress = 0, className = '', children, quiz }: Props = $props();
+	let { title, subtitle, icon, difficulty, estimatedTime, track, progress = 0, className = '', children, quiz }: Props = $props();
 
 	const difficultyColors = {
 		'Beginner': 'success',
 		'Intermediate': 'warning', 
 		'Advanced': 'danger'
+	} as const;
+
+	const trackLabels = {
+		'everyday': { label: 'Everyday Security', color: 'bg-success-soft text-success border-success-border' },
+		'developer': { label: 'Developer Security', color: 'bg-brand-soft text-brand border-brand-border' }
 	} as const;
 
 	let activeSection = $state<'learn' | 'quiz'>('learn');
@@ -42,9 +48,14 @@
 			</div>
 			
 			<div class="flex-1">
-				<div class="flex items-center gap-3 mb-1">
+				<div class="flex flex-wrap items-center gap-3 mb-1">
 					<h1 class="text-2xl font-bold text-text">{title}</h1>
 					<Badge variant={difficultyColors[difficulty]}>{difficulty}</Badge>
+					{#if track}
+						<span class={cn("px-2 py-0.5 text-xs rounded-full border", trackLabels[track].color)}>
+							{trackLabels[track].label}
+						</span>
+					{/if}
 				</div>
 				<p class="text-text-muted">{subtitle}</p>
 				

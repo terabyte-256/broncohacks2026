@@ -143,6 +143,7 @@ Need help? Visit our documentation or contact support.
 	icon="🎣"
 	difficulty="Beginner"
 	estimatedTime="15 min"
+	track="everyday"
 >
 	<!-- What is Phishing -->
 	<section>

@@ -148,6 +148,7 @@ const isValid = await bcrypt.compare(
 	icon="🔐"
 	difficulty="Beginner"
 	estimatedTime="15 min"
+	track="everyday"
 >
 	<!-- What is Password Security -->
 	<section>

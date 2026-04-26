@@ -95,9 +95,10 @@ app.post('/transfer', (req, res) => {
 <ModuleLayout
 	title="Cross-Site Request Forgery (CSRF)"
 	subtitle="Learn how attackers trick users into performing unwanted actions on authenticated sites"
-	icon="🎭"
+	icon="🎯"
 	difficulty="Intermediate"
 	estimatedTime="15 min"
+	track="developer"
 >
 	<!-- What is CSRF -->
 	<section>
