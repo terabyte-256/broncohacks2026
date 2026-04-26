@@ -56,7 +56,10 @@
 					
 					<!-- Description tooltip -->
 					{#if isCurrent}
-						<div class="absolute top-full mt-3 px-3 py-2 rounded-lg bg-brand text-white text-xs max-w-32 text-center shadow-lg animate-fade-in">
+						<div 
+							class="absolute top-full mt-3 px-3 py-2 rounded-lg bg-brand text-white text-xs max-w-32 text-center shadow-lg"
+							style="animation: fadeIn 0.2s ease-out;"
+						>
 							{step.description}
 							<div class="absolute -top-1 left-1/2 -translate-x-1/2 size-2 bg-brand rotate-45"></div>
 						</div>
@@ -66,13 +69,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	@keyframes fade-in {
-		from { opacity: 0; transform: translateY(-4px); }
-		to { opacity: 1; transform: translateY(0); }
-	}
-	.animate-fade-in {
-		animation: fade-in 0.2s ease-out;
-	}
-</style>
