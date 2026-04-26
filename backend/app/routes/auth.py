@@ -13,10 +13,12 @@ GOOGLE_DISCOVERY_URL = (
     "https://accounts.google.com/.well-known/openid-configuration"
 )
 
-# Make sure to use this environment variable in production!
-# os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+# Enable insecure transport for local development with HTTP
+# This is required for OAuth to work with localhost
+if os.environ.get("FLASK_ENV") == "development":
+    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-client = WebApplicationClient(GOOGLE_CLIENT_ID)
+client = WebApplicationClient(GOOGLE_CLIENT_ID) if GOOGLE_CLIENT_ID else None
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -27,9 +29,13 @@ def get_google_provider_cfg():
 
 @auth_bp.route("/login")
 def login():
+    # Check if OAuth credentials are configured
+    if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
+        return jsonify({"error": "Google OAuth credentials not configured"}), 500
+    
     # If user is already logged in, redirect to dashboard
     if "user_id" in session:
-        return redirect(url_for("dashboard.index"))
+        return redirect(url_for("dashboard.get_dashboard"))
     
     # Find out what URL to hit for Google login
     google_provider_cfg = get_google_provider_cfg()
@@ -48,6 +54,8 @@ def login():
 def callback():
     # Get authorization code Google sent back to you
     code = request.args.get("code")
+    if not code:
+        return jsonify({"error": "Missing authorization code"}), 400
 
     # Find out what URL to hit to get tokens that allow you to ask for
     # things on behalf of a user
@@ -67,6 +75,9 @@ def callback():
         data=body,
         auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
     )
+
+    if token_response.status_code != 200:
+        return jsonify({"error": "Failed to get token from Google"}), 400
 
     # Parse the tokens!
     client.parse_request_body_response(token_response.text)
@@ -110,12 +121,12 @@ def callback():
     session["user_email"] = users_email
 
     # Redirect to dashboard or home page
-    return redirect(url_for("dashboard.index"))
+    return redirect(url_for("dashboard.get_dashboard"))
 
 @auth_bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("dashboard.index"))
+    return redirect(url_for("dashboard.get_dashboard"))
 
 @auth_bp.route("/user")
 def get_user():

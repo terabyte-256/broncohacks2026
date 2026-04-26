@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ModuleLayout, CodeEditor, DemoSandbox, AttackVisualizer } from '$lib/components/demo';
+	import { ModuleLayout, CodeEditor, XSSDemo, AttackVisualizer } from '$lib/components/demo';
 	import { Card, Button, Alert, Badge } from '$lib/components';
 	import { cn, uiTokens } from '$lib/theme';
 
@@ -220,7 +220,7 @@
 					</div>
 				</div>
 				
-				<DemoSandbox
+				<XSSDemo
 					html={generatePreviewHtml(userInput, isSafeMode)}
 					title={isSafeMode ? "Preview (Safe)" : "Preview (Vulnerable)"}
 					height="h-72 lg:h-80"

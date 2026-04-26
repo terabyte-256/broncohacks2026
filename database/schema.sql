@@ -3,7 +3,10 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
-    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    oauth_provider TEXT,
+    oauth_id TEXT,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (oauth_provider, oauth_id)
 );
 
 CREATE TABLE IF NOT EXISTS tracks (

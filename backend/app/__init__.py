@@ -22,7 +22,11 @@ def create_app(test_config=None):
     if cors_origins:
         CORS(
             app,
-            resources={r"/api/*": {"origins": cors_origins}},
+            resources={
+                r"/api/*": {"origins": cors_origins},
+                r"/auth/*": {"origins": cors_origins},
+            },
+            supports_credentials=True,
             methods=["GET", "POST", "OPTIONS"],
             allow_headers=["Content-Type", "Authorization"]
         )
