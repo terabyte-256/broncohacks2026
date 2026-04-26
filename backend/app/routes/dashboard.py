@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, jsonify
 
-from ..services import dashboard_service
+from ..services import dashboard_service, analytics_service
 
 bp = Blueprint("dashboard", __name__, url_prefix="/api")
 
@@ -9,4 +9,10 @@ bp = Blueprint("dashboard", __name__, url_prefix="/api")
 def get_dashboard():
     user_id = current_app.config["DEFAULT_USER_ID"]
     data = dashboard_service.get_dashboard(user_id)
+    return jsonify(data)
+
+
+@bp.get("/analytics")
+def get_analytics():
+    data = analytics_service.get_analytics()
     return jsonify(data)
