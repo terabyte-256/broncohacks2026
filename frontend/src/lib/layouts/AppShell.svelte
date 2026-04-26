@@ -4,13 +4,11 @@
 	import { goto, invalidateAll } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { getDashboard } from '$lib/services';
-	import { createClient } from '$lib/supabase/client';
 	import { cn, uiTokens } from '$lib/theme';
-	import type { User } from '@supabase/supabase-js';
 
 	interface Props {
 		children: import('svelte').Snippet;
-		user: User | null;
+		user: { name?: string; email?: string } | null;
 	}
 
 	let { children, user }: Props = $props();
@@ -34,21 +32,18 @@
 	}
 
 	async function handleSignOut() {
-		const supabase = createClient();
-		await supabase.auth.signOut();
+		try {
+			await fetch('/auth/logout', { method: 'GET' });
+		} catch (error) {
+			console.error('Logout failed:', error);
+		}
 		await invalidateAll();
 		goto('/');
 	}
 
-	// Get display name from user metadata
-	const displayName = $derived(
-		user?.user_metadata?.full_name || 
-		user?.user_metadata?.name || 
-		user?.email?.split('@')[0] || 
-		'User'
-	);
-
-	const avatarUrl = $derived(user?.user_metadata?.avatar_url);
+	// Get display name from user
+	const displayName = $derived(user?.name || user?.email?.split('@')[0] || 'User');
+	const avatarUrl = $derived(user?.avatar_url || '');
 
 	onMount(async () => {
 		if (!user) return;

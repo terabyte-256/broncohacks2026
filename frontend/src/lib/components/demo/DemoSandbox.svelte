@@ -86,7 +86,8 @@
 				</style>
 			</head>
 			<body>
-				<script>
+				${html}
+				<` + `script>
 					// Intercept alert and send to parent BEFORE any content loads
 					window.alert = function(msg) {
 						window.parent.postMessage({ type: 'sandbox-alert', message: String(msg) }, '*');
@@ -104,8 +105,7 @@
 						// Suppress image load errors but still let onerror handlers run
 						return false;
 					};
-				</script>
-				${html}
+				</` + `script>
 			</body>
 			</html>
 		`;
