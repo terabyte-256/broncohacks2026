@@ -1,4 +1,5 @@
 <script lang="ts">
+import { onMount } from 'svelte';
 import { Alert, Badge, Button, Card, SectionHeader, Textarea } from '$lib/components';
 import { analyzeMessage, getErrorMessage, type MessageAnalysis } from '$lib/services';
 import { createAsyncState } from '$lib/stores';
@@ -7,36 +8,50 @@ const analysisState = createAsyncState<MessageAnalysis>();
 let message = $state('');
 
 function riskVariant(level: MessageAnalysis['riskLevel']): 'success' | 'warning' | 'danger' {
-if (level === 'Low') {
-return 'success';
-}
-if (level === 'High') {
-return 'danger';
-}
-return 'warning';
+	if (level === 'Low') return 'success';
+	if (level === 'High') return 'danger';
+	return 'warning';
 }
 
 async function submitMessageAnalysis() {
-if (!message.trim()) {
-analysisState.setEmpty('Enter a message before running analysis.');
-return;
+	if (!message.trim()) {
+		analysisState.setEmpty('Enter a message before running analysis.');
+		return;
+	}
+	analysisState.setLoading();
+	try {
+		const result = await analyzeMessage({ message });
+		analysisState.setSuccess(result, 'Analysis complete.');
+	} catch (error) {
+		analysisState.setError(getErrorMessage(error));
+	}
 }
 
-analysisState.setLoading();
-try {
-const result = await analyzeMessage({
-message
+function reset() {
+	message = '';
+	analysisState.reset();
+}
+
+onMount(() => {
+	const stored = sessionStorage.getItem('cl_analysis');
+	const preview = sessionStorage.getItem('cl_preview');
+	sessionStorage.removeItem('cl_analysis');
+	sessionStorage.removeItem('cl_preview');
+	if (stored) {
+		try {
+			const result = JSON.parse(stored) as MessageAnalysis;
+			if (preview) message = preview;
+			analysisState.setSuccess(result, 'Analysis complete.');
+		} catch {
+			// ignore malformed data
+		}
+	}
 });
-analysisState.setSuccess(result, 'Analysis complete.');
-} catch (error) {
-analysisState.setError(getErrorMessage(error));
-}
-}
 </script>
 
 <SectionHeader title="AI Message Checker" subtitle="Scan suspicious messages and review neutral guidance.">
 {#snippet actions()}
-<Button variant="secondary" onclick={() => analysisState.reset()}>Reset</Button>
+<Button variant="secondary" onclick={reset}>Reset</Button>
 {/snippet}
 </SectionHeader>
 
@@ -61,7 +76,7 @@ required
 </form>
 </Card>
 
-<Card title="Analysis result" description="Result from POST /api/analyze-message.">
+<Card title="Analysis result">
 {#if $analysisState.status === 'idle'}
 <Alert variant="info">Run an analysis to see safety guidance.</Alert>
 {:else if $analysisState.status === 'loading'}
