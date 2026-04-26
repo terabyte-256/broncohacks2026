@@ -353,10 +353,11 @@
 			subtitle="Beginner Track · Read the lesson, then take the quiz"
 		>
 			{#snippet actions()}
+				<Button variant="secondary" href="/">← Home</Button>
 				<Button
 					variant="secondary"
 					href="/tracks/beginner"
-					>← Back to modules</Button
+					>← Back to categories</Button
 				>
 			{/snippet}
 		</SectionHeader>
@@ -445,10 +446,11 @@
 	<!-- ══ QUIZ ══ -->
 {:else if view === "quiz"}
 	<SectionHeader
-		title="Quiz"
-		subtitle="One question at a time with backend submission on completion."
+		title={$quizState.data?.title ?? "Quiz"}
+		subtitle="Answer every question, then submit."
 	>
 		{#snippet actions()}
+			<Button variant="secondary" href="/">← Home</Button>
 			<Button variant="secondary" onclick={restartQuiz}
 				>← Back to lesson</Button
 			>
@@ -600,10 +602,11 @@
 {:else if view === "result" && $submissionState.data}
 	<SectionHeader title="Quiz Complete" subtitle="Here's how you did.">
 		{#snippet actions()}
+			<Button variant="secondary" href="/">← Home</Button>
 			<Button variant="secondary" onclick={restartQuiz}
-				>Retake quiz</Button
+				>↺ Retake quiz</Button
 			>
-			<Button href="/tracks/beginner">Back to modules</Button>
+			<Button href="/tracks/beginner">Back to categories</Button>
 		{/snippet}
 	</SectionHeader>
 
