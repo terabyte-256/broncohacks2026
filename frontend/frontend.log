@@ -1,0 +1,112 @@
+
+> frontend@0.0.1 dev
+> vite dev
+
+failed to load config from /Users/maxwell/code/broncohacks2026/frontend/vite.config.ts
+error when starting dev server:
+Error: Build failed with 1 error:
+
+[31m[PARSE_ERROR] Error:[0m Expected a semicolon or an implicit semicolon after a statement, but found none
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m vite.config.ts:34:2 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m34 │[0m [38;5;249m}[0m[38;5;249m)[0m[38;5;249m;[0m
+ [38;5;240m   │[0m  │ 
+ [38;5;240m   │[0m  ╰─ 
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: Try inserting a semicolon here
+[38;5;246m────╯[0m
+
+    at aggregateBindingErrorsIntoJsError (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:48:18)
+    at unwrapBindingResult (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:18:128)
+    at #build (file:///svelte config changed, restarting vite dev-server. changed file: /Users/maxwell/code/broncohacks2026/frontend/svelte.config.js
+3:42:47 PM [vite] changed tsconfig file detected: /Users/maxwell/code/broncohacks2026/frontend/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+3:42:47 PM [vite] (client) page reload src/app.html
+3:42:47 PM [vite] vite.config.ts changed, restarting server...
+3:42:47 PM [vite] (client) Re-optimizing dependencies because lockfile has changed
+3:42:47 PM [vite] server restarted.
+3:27:39 AM [vite] vite.config.ts changed, restarting server...
+3:27:39 AM [vite] (client) Re-optimizing dependencies because lockfile has changed
+3:27:39 AM [vite] server restarted.
+(!) Failed to run dependency scan. Skipping dependency pre-bundling. Error:   Failed to scan for dependencies from entries:
+  /Users/maxwell/code/broncohacks2026/frontend/src/routes/+layout.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/analytics/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/history/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/message-checker/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/quiz/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/tracks/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/auth/error/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/auth/login/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/csrf/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/password-security/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/phishing/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/sql-injection/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/xss/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/quiz/[id]/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/tracks/beginner/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/tracks/developer/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/tracks/everyday/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/tracks/beginner/[ID]/+page.svelte
+
+  Build failed with 1 error:
+
+[31m[PARSE_ERROR] Error:[0m Unterminated string
+     [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m virtual-module:/Users/maxwell/code/broncohacks2026/frontend/src/lib/components/demo/DemoSandbox.svelte?id=0:24:26 [38;5;246m][0m
+     [38;5;246m│[0m
+ [38;5;246m 24 │[0m ╭─▶ [38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249mc[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249ms[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249ms[0m[38;5;249ma[0m[38;5;249mn[0m[38;5;249md[0m[38;5;249mb[0m[38;5;249mo[0m[38;5;249mx[0m[38;5;249mC[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249mt[0m[38;5;249me[0m[38;5;249mn[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m=[0m[38;5;249m [0m`
+ [38;5;240m    ┆[0m ┆   
+ [38;5;246m109 │[0m ├─▶ import 'svelte'
+ [38;5;240m    │[0m │                    
+ [38;5;240m    │[0m ╰──────────────────── 
+[38;5;246m─────╯[0m
+
+    at aggregateBindingErrorsIntoJsError (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:48:18)
+    at unwrapBindingResult (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:18:128)
+    at scan (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/rolldown/dist/experimental-index.mjs:176:3)
+    at async Object.build (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/vite/dist/node/chunks/node.js:30714:3)
+    at async scan (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/vite/dist/node/chunks/node.js:30659:4)
+    at async file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/vite/dist/node/chunks/node.js:23222:15
+3:31:44 AM [vite] vite.config.ts changed, restarting server...
+3:31:44 AM [vite] (client) Re-optimizing dependencies because lockfile has changed
+3:31:44 AM [vite] server restarted.
+(!) Failed to run dependency scan. Skipping dependency pre-bundling. Error:   Failed to scan for dependencies from entries:
+  /Users/maxwell/code/broncohacks2026/frontend/src/routes/+layout.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/message-checker/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/analytics/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/history/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/quiz/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/tracks/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/auth/error/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/auth/login/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/csrf/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/password-security/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/phishing/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/tracks/beginner/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/xss/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/modules/sql-injection/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/quiz/[id]/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/tracks/everyday/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/tracks/developer/+page.svelte
+/Users/maxwell/code/broncohacks2026/frontend/src/routes/tracks/beginner/[ID]/+page.svelte
+
+  Build failed with 1 error:
+
+[31m[PARSE_ERROR] Error:[0m Unterminated string
+     [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m virtual-module:/Users/maxwell/code/broncohacks2026/frontend/src/lib/components/demo/DemoSandbox.svelte?id=0:24:26 [38;5;246m][0m
+     [38;5;246m│[0m
+ [38;5;246m 24 │[0m ╭─▶ [38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249m [0m[38;5;249mc[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249ms[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249ms[0m[38;5;249ma[0m[38;5;249mn[0m[38;5;249md[0m[38;5;249mb[0m[38;5;249mo[0m[38;5;249mx[0m[38;5;249mC[0m[38;5;249mo[0m[38;5;249mn[0m[38;5;249mt[0m[38;5;249me[0m[38;5;249mn[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m=[0m[38;5;249m [0m`
+ [38;5;240m    ┆[0m ┆   
+ [38;5;246m109 │[0m ├─▶ import 'svelte'
+ [38;5;240m    │[0m │                    
+ [38;5;240m    │[0m ╰──────────────────── 
+[38;5;246m─────╯[0m
+
+    at aggregateBindingErrorsIntoJsError (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:48:18)
+    at unwrapBindingResult (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:18:128)
+    at scan (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/rolldown/dist/experimental-index.mjs:176:3)
+    at async Object.build (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/vite/dist/node/chunks/node.js:30714:3)
+    at async scan (file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/vite/dist/node/chunks/node.js:30659:4)
+    at async file:///Users/maxwell/code/broncohacks2026/frontend/node_modules/vite/dist/node/chunks/node.js:23222:15

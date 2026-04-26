@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import { Alert } from "$lib/components";
+	import { page } from "$app/stores";
+	import { Alert, StatsCard } from "$lib/components";
 	import {
 		analyzeMessage,
 		getDashboard,
@@ -10,6 +11,7 @@
 		type ProgressData,
 	} from "$lib/services";
 	import { createAsyncState } from "$lib/stores";
+	import { cn, uiTokens } from "$lib/theme";
 
 	const dashboardState = createAsyncState<DashboardData>();
 	const progressState = createAsyncState<ProgressData>();
@@ -18,10 +20,14 @@
 	let analyzing = $state(false);
 	let analyzeError = $state("");
 
+	const user = $derived($page.data.user);
 	const metrics = $derived($dashboardState.data?.metrics);
 	const progressSummary = $derived($progressState.data?.summary);
+	const recentQuizAttempts = $derived($dashboardState.data?.recentQuizAttempts ?? []);
 
 	async function loadAll() {
+		if (!user) return;
+		
 		dashboardState.setLoading();
 		progressState.setLoading();
 		try {
@@ -71,81 +77,128 @@
 		<span class="text-warning"> Stay Safe.</span>
 	</h1>
 	<p class="mx-auto mt-3 max-w-lg text-base text-text-muted">
-		Choose your track and level up your cybersecurity skills or check
-		suspicious messages with AI.
+		{#if user}
+			Welcome back, {user.user_metadata?.full_name || user.user_metadata?.name || 'learner'}! Continue your cybersecurity journey.
+		{:else}
+			Choose your track and level up your cybersecurity skills or check suspicious messages with AI.
+		{/if}
 	</p>
 </div>
 
+<!-- Stats Grid for logged in users -->
+{#if user && metrics}
+	<div class="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		<StatsCard 
+			icon="🏆" 
+			value={metrics.averageQuizScore} 
+			label="Total Score" 
+			variant="warning"
+		/>
+		<StatsCard 
+			icon="🔥" 
+			value={metrics.streakDays} 
+			label="Day Streak" 
+			variant="danger"
+		/>
+		<StatsCard 
+			icon="📋" 
+			value={metrics.completedModules} 
+			label="Topics Completed" 
+			variant="info"
+		/>
+		<StatsCard 
+			icon="📊" 
+			value="{progressSummary?.averageCompletionPercent ?? 0}%" 
+			label="Overall Progress" 
+			variant="success"
+		/>
+	</div>
+{/if}
+
 <!-- Track + checker cards -->
 <div class="mb-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-	<!-- Beginner Track -->
+	<!-- Everyday Security Track -->
 	<a
-		href="/tracks/beginner"
-		class="group block rounded-xl border border-border bg-surface p-5 shadow-sm transition-all hover:border-brand-border hover:shadow-md"
+		href="/tracks/everyday"
+		class="group block rounded-xl border border-border bg-surface p-5 shadow-sm transition-all hover:border-brand-border hover:shadow-md hover:-translate-y-0.5"
+	>
+		<div class="mb-3 flex items-center gap-3">
+			<div
+				class="flex h-10 w-10 items-center justify-center rounded-lg bg-success-soft text-xl"
+			>
+				🛡️
+			</div>
+			<div>
+				<p class="font-semibold text-text">Everyday Security</p>
+				<p class="text-xs text-text-muted">
+					For everyone - no tech skills needed
+				</p>
+			</div>
+		</div>
+		<p class="mb-4 text-sm text-text-muted">
+			Protect yourself from common online threats with practical skills anyone can learn.
+		</p>
+		<p
+			class="mb-2 text-xs font-semibold uppercase tracking-widest text-success"
+		>
+			Categories
+		</p>
+		<div class="space-y-1.5">
+			<div
+				class="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2 text-sm text-text"
+			>
+				<div class="flex items-center gap-2">
+					<span>🎣</span>
+					Phishing Attacks
+				</div>
+				<span class="text-text-muted">›</span>
+			</div>
+			<div
+				class="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2 text-sm text-text"
+			>
+				<div class="flex items-center gap-2">
+					<span>🔐</span>
+					Password Security
+				</div>
+				<span class="text-text-muted">›</span>
+			</div>
+			<div
+				class="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2 text-sm text-text opacity-60"
+			>
+				<div class="flex items-center gap-2">
+					<span>🎭</span>
+					Social Engineering
+				</div>
+				<span class="text-xs text-text-muted">Soon</span>
+			</div>
+		</div>
+		<div
+			class="mt-4 w-full rounded-lg bg-success py-2.5 text-center text-sm font-semibold text-white transition-opacity group-hover:opacity-90"
+		>
+			Start Everyday Security →
+		</div>
+	</a>
+
+	<!-- Developer Security Track -->
+	<a
+		href="/tracks/developer"
+		class="group block rounded-xl border border-border bg-surface p-5 shadow-sm transition-all hover:border-brand-border hover:shadow-md hover:-translate-y-0.5"
 	>
 		<div class="mb-3 flex items-center gap-3">
 			<div
 				class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-soft text-xl"
 			>
-				🎓
-			</div>
-			<div>
-				<p class="font-semibold text-text">Beginner Track</p>
-				<p class="text-xs text-text-muted">
-					Everyday threat awareness
-				</p>
-			</div>
-		</div>
-		<p class="mb-4 text-sm text-text-muted">
-			Learn the basics and spot everyday online threats through quick
-			quizzes.
-		</p>
-		<p
-			class="mb-2 text-xs font-semibold uppercase tracking-widest text-brand"
-		>
-			Categories
-		</p>
-		<div class="space-y-1.5">
-			{#each [['🎣', 'Phishing'], ['🧠', 'Social Engineering'], ['🔐', 'Auth & Passwords'], ['🍪', 'Sessions']] as [icon, label]}
-				<div
-					class="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2 text-sm text-text"
-				>
-					<div class="flex items-center gap-2">
-						<span>{icon}</span>
-						{label}
-					</div>
-					<span class="text-text-muted">›</span>
-				</div>
-			{/each}
-		</div>
-		<div
-			class="mt-4 w-full rounded-lg bg-brand py-2.5 text-center text-sm font-semibold text-white transition-opacity group-hover:opacity-90"
-		>
-			Start Beginner Track →
-		</div>
-	</a>
-
-	<!-- Developer Track -->
-	<a
-		href="/tracks/developer"
-		class="group block rounded-xl border border-border bg-surface p-5 shadow-sm transition-all hover:border-brand-border hover:shadow-md"
-	>
-		<div class="mb-3 flex items-center gap-3">
-			<div
-				class="flex h-10 w-10 items-center justify-center rounded-lg bg-info-soft text-xl"
-			>
 				💻
 			</div>
 			<div>
-				<p class="font-semibold text-text">Developer Track</p>
+				<p class="font-semibold text-text">Developer Security</p>
 				<p class="text-xs text-text-muted">
-					Secure coding fundamentals
+					For developers building secure apps
 				</p>
 			</div>
 		</div>
 		<p class="mb-4 text-sm text-text-muted">
-			Explore real-world attack techniques and learn how to build secure
-			code.
+			Learn to build secure applications and protect against common web vulnerabilities.
 		</p>
 		<p
 			class="mb-2 text-xs font-semibold uppercase tracking-widest text-brand"
@@ -170,7 +223,7 @@
 			>
 				<div class="flex items-center gap-2">
 					<span
-						class="rounded bg-success-soft px-1.5 py-0.5 text-[10px] font-bold text-success"
+						class="rounded bg-warning-soft px-1.5 py-0.5 text-[10px] font-bold text-warning"
 						>SQLi</span
 					>
 					SQL Injection
@@ -182,7 +235,7 @@
 			>
 				<div class="flex items-center gap-2">
 					<span
-						class="rounded bg-warning-soft px-1.5 py-0.5 text-[10px] font-bold text-warning"
+						class="rounded bg-brand-soft px-1.5 py-0.5 text-[10px] font-bold text-brand"
 						>CSRF</span
 					>
 					Cross-Site Request Forgery
@@ -191,9 +244,9 @@
 			</div>
 		</div>
 		<div
-			class="mt-4 w-full rounded-lg bg-info py-2.5 text-center text-sm font-semibold text-white transition-opacity group-hover:opacity-90"
+			class="mt-4 w-full rounded-lg bg-brand py-2.5 text-center text-sm font-semibold text-white transition-opacity group-hover:opacity-90"
 		>
-			Start Developer Track →
+			Start Developer Security →
 		</div>
 	</a>
 
@@ -238,7 +291,7 @@
 				{#if analyzing}
 					Analyzing…
 				{:else}
-					✦ Analyze Message
+					Analyze Message
 				{/if}
 			</button>
 		</div>
@@ -249,60 +302,52 @@
 	</div>
 </div>
 
-<!-- Bottom stats bar -->
-<div class="rounded-xl border border-border bg-surface px-6 py-5">
-	<div class="grid grid-cols-2 gap-6 sm:grid-cols-4">
-		<div class="flex items-center gap-3">
-			<div
-				class="flex h-10 w-10 items-center justify-center rounded-full bg-warning-soft text-xl"
-			>
-				🏆
-			</div>
-			<div>
-				<p class="text-xl font-semibold text-text">
-					{metrics?.averageQuizScore ?? 0}
-				</p>
-				<p class="text-xs text-text-muted">Total Score</p>
-			</div>
-		</div>
-		<div class="flex items-center gap-3">
-			<div
-				class="flex h-10 w-10 items-center justify-center rounded-full bg-danger-soft text-xl"
-			>
-				🔥
-			</div>
-			<div>
-				<p class="text-xl font-semibold text-text">
-					{metrics?.streakDays ?? 0}
-				</p>
-				<p class="text-xs text-text-muted">Current Streak</p>
-			</div>
-		</div>
-		<div class="flex items-center gap-3">
-			<div
-				class="flex h-10 w-10 items-center justify-center rounded-full bg-info-soft text-xl"
-			>
-				📋
-			</div>
-			<div>
-				<p class="text-xl font-semibold text-text">
-					{metrics?.completedModules ?? 0}
-				</p>
-				<p class="text-xs text-text-muted">Topics Completed</p>
-			</div>
-		</div>
-		<div class="flex items-center gap-3">
-			<div
-				class="flex h-10 w-10 items-center justify-center rounded-full bg-success-soft text-xl"
-			>
-				📊
-			</div>
-			<div>
-				<p class="text-xl font-semibold text-text">
-					{progressSummary?.averageCompletionPercent ?? 0}%
-				</p>
-				<p class="text-xs text-text-muted">Overall Progress</p>
-			</div>
+<!-- Recent Activity for logged in users -->
+{#if user && recentQuizAttempts.length > 0}
+	<div class={cn(uiTokens.card, 'p-6')}>
+		<h2 class="mb-4 text-lg font-semibold text-text">Recent Activity</h2>
+		<div class="space-y-3">
+			{#each recentQuizAttempts.slice(0, 5) as attempt}
+				<div class="flex items-center justify-between rounded-lg border border-border bg-muted px-4 py-3">
+					<div class="flex items-center gap-3">
+						<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-soft text-sm">
+							📝
+						</div>
+						<div>
+							<p class="text-sm font-medium text-text">{attempt.quizTitle}</p>
+							<p class="text-xs text-text-muted">
+								{new Date(attempt.submittedAt).toLocaleDateString()}
+							</p>
+						</div>
+					</div>
+					<div class="flex items-center gap-2">
+						<span class={cn(
+							'rounded-full px-2 py-1 text-xs font-medium',
+							attempt.score >= 80 ? 'bg-success-soft text-success' :
+							attempt.score >= 60 ? 'bg-warning-soft text-warning' :
+							'bg-danger-soft text-danger'
+						)}>
+							{attempt.score}%
+						</span>
+					</div>
+				</div>
+			{/each}
 		</div>
 	</div>
-</div>
+{:else if !user}
+	<!-- Bottom stats bar for guests -->
+	<div class="rounded-xl border border-border bg-surface px-6 py-5">
+		<div class="text-center">
+			<p class="mb-4 text-lg font-semibold text-text">Track Your Progress</p>
+			<p class="mb-4 text-sm text-text-muted">
+				Sign in to save your progress, earn achievements, and track your cybersecurity learning journey.
+			</p>
+			<a
+				href="/auth/login"
+				class="inline-block rounded-lg bg-brand px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+			>
+				Sign In to Get Started
+			</a>
+		</div>
+	</div>
+{/if}

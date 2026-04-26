@@ -1,130 +1,198 @@
 <script lang="ts">
-import { onMount } from 'svelte';
-import { Alert, Badge, Button, Card, ProgressBar, SectionHeader } from '$lib/components';
-import {
-getErrorMessage,
-getTrackModules,
-getTracks,
-type TrackModulesResponse,
-type TrackSummary
-} from '$lib/services';
-import { createAsyncState } from '$lib/stores';
+	import { Badge, Button, Card, SectionHeader } from '$lib/components';
+	import { cn, uiTokens } from '$lib/theme';
 
-const tracksState = createAsyncState<TrackSummary[]>();
-const modulesState = createAsyncState<TrackModulesResponse>();
+	// Define the two unified tracks with their categories and modules
+	const tracks = [
+		{
+			id: 'everyday',
+			title: 'Everyday Security',
+			description: 'Protect yourself from common online threats with practical skills anyone can learn.',
+			icon: '🛡️',
+			color: 'success',
+			href: '/tracks/everyday',
+			difficulty: 'Beginner',
+			moduleCount: 4,
+			availableCount: 2,
+			categories: [
+				{
+					name: 'Recognizing Threats',
+					modules: ['Phishing Attacks', 'Social Engineering']
+				},
+				{
+					name: 'Best Practices',
+					modules: ['Password Security', 'Safe Browsing']
+				}
+			]
+		},
+		{
+			id: 'developer',
+			title: 'Developer Security',
+			description: 'Learn to build secure applications and protect against common web vulnerabilities.',
+			icon: '💻',
+			color: 'brand',
+			href: '/tracks/developer',
+			difficulty: 'Intermediate',
+			moduleCount: 5,
+			availableCount: 3,
+			categories: [
+				{
+					name: 'Web Vulnerabilities',
+					modules: ['Cross-Site Scripting (XSS)', 'SQL Injection', 'CSRF']
+				},
+				{
+					name: 'Secure Development',
+					modules: ['Authentication Security', 'API Security']
+				}
+			]
+		}
+	];
 
-let selectedTrackId = $state<number | null>(null);
-
-async function loadTracks() {
-tracksState.setLoading();
-try {
-const response = await getTracks();
-if (!response.tracks.length) {
-tracksState.setEmpty('No learning tracks available yet.');
-modulesState.reset();
-selectedTrackId = null;
-return;
-}
-tracksState.setSuccess(response.tracks);
-const nextTrackId = selectedTrackId ?? response.tracks[0].id;
-await loadModules(nextTrackId);
-} catch (error) {
-tracksState.setError(getErrorMessage(error));
-}
-}
-
-async function loadModules(trackId: number) {
-selectedTrackId = trackId;
-modulesState.setLoading();
-try {
-const response = await getTrackModules(trackId);
-if (!response.modules.length) {
-modulesState.setEmpty('This track has no modules yet.');
-return;
-}
-modulesState.setSuccess(response);
-} catch (error) {
-modulesState.setError(getErrorMessage(error));
-}
-}
-
-onMount(() => {
-void loadTracks();
-});
+	const colorStyles = {
+		success: {
+			bg: 'bg-success-soft',
+			border: 'border-success-border',
+			text: 'text-success',
+			button: 'bg-success hover:bg-success/90'
+		},
+		brand: {
+			bg: 'bg-brand-soft',
+			border: 'border-brand-border',
+			text: 'text-brand',
+			button: 'bg-brand hover:bg-brand-strong'
+		}
+	};
 </script>
 
-<SectionHeader title="Learning Tracks" subtitle="Browse tracks and inspect module-level progress.">
-{#snippet actions()}
-<Button variant="secondary" onclick={loadTracks}>Reload tracks</Button>
-{/snippet}
+<svelte:head>
+	<title>Learning Tracks | CyberLearn</title>
+	<meta name="description" content="Choose your cybersecurity learning path: Everyday Security for everyone, or Developer Security for building secure applications." />
+</svelte:head>
+
+<SectionHeader 
+	title="Learning Tracks" 
+	subtitle="Choose your path to cybersecurity mastery. Each track contains categorized modules with interactive demos."
+>
+	{#snippet actions()}
+		<Button variant="secondary" href="/">Back to Dashboard</Button>
+	{/snippet}
 </SectionHeader>
 
-<div class="grid gap-5 lg:grid-cols-[2fr_3fr]">
-<Card title="Tracks" description="Select a track to inspect modules and quizzes.">
-{#if $tracksState.status === 'loading'}
-<p class="text-sm text-text-muted">Loading tracks...</p>
-{:else if $tracksState.status === 'error'}
-<Alert variant="danger">{$tracksState.message}</Alert>
-{:else if $tracksState.status === 'empty'}
-<Alert variant="warning">{$tracksState.message}</Alert>
-{:else if $tracksState.status === 'success' && $tracksState.data}
-<ul class="space-y-3">
-{#each $tracksState.data as track (track.id)}
-<li>
-<button
-type="button"
-class={`w-full rounded-lg border px-3 py-3 text-left transition-colors ${
-selectedTrackId === track.id
-? 'border-brand-border bg-brand-soft'
-: 'border-border bg-surface hover:bg-muted'
-}`}
-onclick={() => loadModules(track.id)}
->
-<div class="flex flex-wrap items-center justify-between gap-2">
-<p class="font-medium text-text">{track.title}</p>
-<Badge variant={track.completionPercent >= 100 ? 'success' : 'neutral'}>{track.completionPercent}%</Badge>
+<!-- Track Selection -->
+<div class="grid gap-6 md:grid-cols-2 mb-8">
+	{#each tracks as track (track.id)}
+		{@const styles = colorStyles[track.color as keyof typeof colorStyles]}
+		<a
+			href={track.href}
+			class={cn(
+				uiTokens.cardHover,
+				"block p-6 group",
+				styles.border
+			)}
+		>
+			<div class="flex items-start justify-between gap-4 mb-4">
+				<div class="flex items-center gap-3">
+					<div class={cn("size-12 rounded-xl flex items-center justify-center text-2xl", styles.bg)}>
+						{track.icon}
+					</div>
+					<div>
+						<h2 class="text-xl font-bold text-text">{track.title}</h2>
+						<Badge variant={track.color as 'success' | 'brand'}>{track.difficulty}</Badge>
+					</div>
+				</div>
+			</div>
+			
+			<p class="text-sm text-text-muted mb-4">{track.description}</p>
+			
+			<!-- Categories Preview -->
+			<div class="space-y-3 mb-4">
+				{#each track.categories as category}
+					<div>
+						<p class={cn("text-xs font-semibold uppercase tracking-wider mb-1.5", styles.text)}>
+							{category.name}
+						</p>
+						<div class="flex flex-wrap gap-1.5">
+							{#each category.modules as module}
+								<span class="px-2 py-1 text-xs rounded-md bg-muted border border-border text-text-muted">
+									{module}
+								</span>
+							{/each}
+						</div>
+					</div>
+				{/each}
+			</div>
+			
+			<!-- Progress indicator -->
+			<div class="flex items-center justify-between text-sm">
+				<span class="text-text-muted">{track.availableCount} of {track.moduleCount} modules available</span>
+				<span class={cn("font-medium group-hover:underline", styles.text)}>
+					Explore Track →
+				</span>
+			</div>
+		</a>
+	{/each}
 </div>
-<p class="mt-1 text-sm text-text-muted">{track.description}</p>
-<div class="mt-2 text-xs text-text-muted">
-{track.completedModules}/{track.moduleCount} modules completed
-</div>
-</button>
-</li>
-{/each}
-</ul>
-{/if}
+
+<!-- Quick Access to All Interactive Modules -->
+<Card className="mb-8">
+	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+		<div>
+			<h3 class="text-lg font-semibold text-text">Interactive Modules Hub</h3>
+			<p class="text-sm text-text-muted">Browse all available interactive demos in one place</p>
+		</div>
+		<a 
+			href="/modules"
+			class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand text-white font-medium hover:bg-brand-strong transition-colors"
+		>
+			<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+			</svg>
+			View All Modules
+		</a>
+	</div>
+	
+	<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+		<a href="/modules/phishing" class={cn(uiTokens.cardHover, "p-3 text-center")}>
+			<span class="text-2xl mb-1 block">🎣</span>
+			<span class="text-sm font-medium text-text">Phishing</span>
+		</a>
+		<a href="/modules/password-security" class={cn(uiTokens.cardHover, "p-3 text-center")}>
+			<span class="text-2xl mb-1 block">🔐</span>
+			<span class="text-sm font-medium text-text">Passwords</span>
+		</a>
+		<a href="/modules/xss" class={cn(uiTokens.cardHover, "p-3 text-center")}>
+			<span class="text-2xl mb-1 block">💉</span>
+			<span class="text-sm font-medium text-text">XSS</span>
+		</a>
+		<a href="/modules/sql-injection" class={cn(uiTokens.cardHover, "p-3 text-center")}>
+			<span class="text-2xl mb-1 block">🗄️</span>
+			<span class="text-sm font-medium text-text">SQL Injection</span>
+		</a>
+		<a href="/modules/csrf" class={cn(uiTokens.cardHover, "p-3 text-center")}>
+			<span class="text-2xl mb-1 block">🎯</span>
+			<span class="text-sm font-medium text-text">CSRF</span>
+		</a>
+	</div>
 </Card>
 
-<Card title="Modules" description="Modules for the selected track.">
-{#if $modulesState.status === 'loading'}
-<p class="text-sm text-text-muted">Loading modules...</p>
-{:else if $modulesState.status === 'error'}
-<Alert variant="danger">{$modulesState.message}</Alert>
-{:else if $modulesState.status === 'empty'}
-<Alert variant="warning">{$modulesState.message}</Alert>
-{:else if $modulesState.status === 'success' && $modulesState.data}
-<div class="space-y-3">
-<p class="text-sm text-text-muted">{$modulesState.data.track.title}</p>
-<ul class="space-y-3">
-{#each $modulesState.data.modules as module (module.id)}
-<li class="rounded-lg border border-border bg-muted px-3 py-3">
-<div class="flex flex-wrap items-center justify-between gap-2">
-<p class="font-medium text-text">{module.title}</p>
-<Badge variant={module.completed ? 'success' : 'brand'}>{module.completed ? 'completed' : 'in progress'}</Badge>
-</div>
-<p class="mt-1 text-sm text-text-muted">{module.description}</p>
-<div class="mt-2">
-<ProgressBar value={module.completionPercent} label={`${module.title} completion`} />
-</div>
-{#if module.lastScore !== null}
-<p class="mt-2 text-xs text-text-muted">Last quiz score: {module.lastScore}%</p>
-{/if}
-</li>
-{/each}
-</ul>
-</div>
-{:else}
-<Alert variant="info">Choose a track to view modules.</Alert>
-{/if}
+<!-- Learning Path Recommendations -->
+<Card>
+	<div class="flex items-start gap-4">
+		<div class="size-10 rounded-lg bg-warning-soft flex items-center justify-center flex-shrink-0">
+			<span class="text-xl">💡</span>
+		</div>
+		<div>
+			<h3 class="font-semibold text-text mb-2">Which Track Should I Choose?</h3>
+			<div class="space-y-3 text-sm text-text-muted">
+				<p>
+					<span class="font-medium text-success">Everyday Security</span> is perfect if you want to protect yourself online. 
+					Learn to spot scams, create strong passwords, and browse safely - no technical knowledge required.
+				</p>
+				<p>
+					<span class="font-medium text-brand">Developer Security</span> is for developers who want to build secure applications. 
+					Learn about XSS, SQL injection, CSRF, and other vulnerabilities through hands-on demos.
+				</p>
+			</div>
+		</div>
+	</div>
 </Card>
-</div>

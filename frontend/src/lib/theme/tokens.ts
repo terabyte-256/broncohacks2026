@@ -3,10 +3,11 @@ return classes.filter(Boolean).join(' ');
 }
 
 export const uiTokens = {
-pageWidth: 'mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8',
-card: 'rounded-xl border border-border bg-surface text-text shadow-sm',
-cardMuted: 'rounded-xl border border-border bg-muted text-text shadow-sm',
-focusRing: 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-canvas'
+	pageWidth: 'mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8',
+	card: 'rounded-xl border border-border bg-surface text-text shadow-sm transition-all duration-200',
+	cardMuted: 'rounded-xl border border-border bg-muted text-text shadow-sm transition-all duration-200',
+	cardHover: 'rounded-xl border border-border bg-surface text-text shadow-sm transition-all duration-200 hover:border-brand-border hover:shadow-md hover:-translate-y-0.5',
+	focusRing: 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-canvas'
 } as const;
 
 export const buttonVariants = {
