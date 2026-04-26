@@ -91,20 +91,20 @@
 		</div>
 		
 		{#if readonly}
-			<div class="pl-12 pr-4 py-3 overflow-x-auto">
+			<div class="pl-12 pr-4 py-3 overflow-x-auto min-h-[120px]">
 				<pre class="leading-6 text-text whitespace-pre-wrap">{@html highlight(code, language)}</pre>
 			</div>
 		{:else}
-			<div class="relative pl-12 pr-4 py-3">
+			<div class="relative pl-12 pr-4 py-3 min-h-[150px]">
 				<!-- Highlighted overlay -->
-				<pre class="absolute inset-0 pl-12 pr-4 py-3 leading-6 text-text whitespace-pre-wrap pointer-events-none" aria-hidden="true">{@html highlight(code, language)}</pre>
+				<pre class="absolute inset-0 pl-12 pr-4 py-3 leading-6 text-text whitespace-pre-wrap pointer-events-none overflow-hidden" aria-hidden="true">{@html highlight(code, language)}</pre>
 				
 				<!-- Editable textarea -->
 				<textarea
-					class="w-full bg-transparent leading-6 text-transparent caret-text resize-none outline-none"
+					class="w-full h-full min-h-[120px] bg-transparent leading-6 text-transparent caret-text resize-y outline-none"
 					value={code}
 					oninput={handleInput}
-					rows={lines.length}
+					rows={Math.max(lines.length, 5)}
 					spellcheck="false"
 					autocomplete="off"
 					autocorrect="off"

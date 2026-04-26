@@ -6,11 +6,12 @@
 		html: string;
 		title?: string;
 		className?: string;
+		height?: string;
 		onAlert?: (message: string) => void;
 		showAlertBanner?: boolean;
 	}
 
-	let { html, title = 'Preview', className = '', onAlert, showAlertBanner = true }: Props = $props();
+	let { html, title = 'Preview', className = '', height = 'h-80', onAlert, showAlertBanner = true }: Props = $props();
 	
 	let iframeRef: HTMLIFrameElement;
 	let alertMessage = $state<string | null>(null);
@@ -142,7 +143,7 @@
 	<iframe
 		bind:this={iframeRef}
 		title="Demo Sandbox"
-		class="w-full h-64 bg-canvas"
+		class={cn("w-full bg-canvas", height)}
 		sandbox="allow-scripts"
 	></iframe>
 </div>

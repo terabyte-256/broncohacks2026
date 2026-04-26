@@ -206,6 +206,7 @@
 				<DemoSandbox
 					html={generatePreviewHtml(userInput, isSafeMode)}
 					title={isSafeMode ? "Preview (Safe)" : "Preview (Vulnerable)"}
+					height="h-72 lg:h-80"
 					onAlert={handleAlert}
 				/>
 			</div>

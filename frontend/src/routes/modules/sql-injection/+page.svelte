@@ -187,16 +187,16 @@ db.execute(query, [username, password]);`;
 					<h4 class="font-medium text-text">Login Form</h4>
 					
 					<div>
-						<label class="block text-sm font-medium text-text mb-1.5">Username</label>
-						<Input bind:value={username} placeholder="Enter username" />
+						<label class="block text-sm font-medium text-text mb-2">Username</label>
+						<Input bind:value={username} placeholder="Enter username" size="lg" />
 					</div>
 					
 					<div>
-						<label class="block text-sm font-medium text-text mb-1.5">Password</label>
-						<Input bind:value={password} type="password" placeholder="Enter password" />
+						<label class="block text-sm font-medium text-text mb-2">Password</label>
+						<Input bind:value={password} type="password" placeholder="Enter password" size="lg" />
 					</div>
 					
-					<Button onclick={simulateQuery} fullWidth>
+					<Button onclick={simulateQuery} fullWidth size="lg">
 						Login
 					</Button>
 					

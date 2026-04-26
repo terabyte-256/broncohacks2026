@@ -216,7 +216,8 @@ const isValid = await bcrypt.compare(
 						type={showPassword ? 'text' : 'password'}
 						bind:value={password}
 						placeholder="Enter a test password..."
-						className="pr-12"
+						size="lg"
+						className="pr-14"
 					/>
 					<button
 						type="button"
