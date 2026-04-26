@@ -13,6 +13,13 @@
 	let demoStep = $state(-1);
 	let alertTriggered = $state(false);
 
+	// Reset alert when input changes or safe mode toggles
+	$effect(() => {
+		userInput;
+		isSafeMode;
+		alertTriggered = false;
+	});
+
 	const vulnerableCode = `<!-- Vulnerable Code -->
 <div id="greeting"></div>
 
@@ -137,18 +144,28 @@
 						<p class="mt-1 text-sm text-text-muted">Try injecting a script and see what happens</p>
 					</div>
 					<div class="flex items-center gap-3">
-						<span class="text-sm text-text-muted">Safe Mode:</span>
+						<span class={cn(
+							"text-sm font-medium transition-colors",
+							isSafeMode ? "text-success" : "text-danger"
+						)}>
+							{isSafeMode ? 'Safe Mode' : 'Vulnerable'}
+						</span>
 						<button 
+							type="button"
+							role="switch"
+							aria-checked={isSafeMode}
 							class={cn(
-								"relative w-12 h-6 rounded-full transition-colors",
-								isSafeMode ? "bg-success" : "bg-danger"
+								"relative w-14 h-7 rounded-full transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-canvas",
+								isSafeMode 
+									? "bg-success border-success focus:ring-success" 
+									: "bg-danger border-danger focus:ring-danger"
 							)}
-							onclick={() => { isSafeMode = !isSafeMode; alertTriggered = false; }}
+							onclick={() => isSafeMode = !isSafeMode}
 							aria-label="Toggle safe mode"
 						>
 							<span class={cn(
-								"absolute top-1 size-4 rounded-full bg-white transition-transform",
-								isSafeMode ? "translate-x-7" : "translate-x-1"
+								"absolute top-0.5 size-5 rounded-full bg-white shadow-md transition-transform duration-200",
+								isSafeMode ? "translate-x-7" : "translate-x-0.5"
 							)}></span>
 						</button>
 					</div>

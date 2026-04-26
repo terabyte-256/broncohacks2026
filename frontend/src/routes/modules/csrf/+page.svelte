@@ -145,18 +145,28 @@ app.post('/transfer', (req, res) => {
 						<p class="mt-1 text-sm text-text-muted">Simulate a CSRF attack on a banking application</p>
 					</div>
 					<div class="flex items-center gap-3">
-						<span class="text-sm text-text-muted">CSRF Protection:</span>
+						<span class={cn(
+							"text-sm font-medium transition-colors",
+							hasCSRFToken ? "text-success" : "text-danger"
+						)}>
+							{hasCSRFToken ? 'Protected' : 'Vulnerable'}
+						</span>
 						<button 
+							type="button"
+							role="switch"
+							aria-checked={hasCSRFToken}
 							class={cn(
-								"relative w-12 h-6 rounded-full transition-colors",
-								hasCSRFToken ? "bg-success" : "bg-danger"
+								"relative w-14 h-7 rounded-full transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-canvas",
+								hasCSRFToken 
+									? "bg-success border-success focus:ring-success" 
+									: "bg-danger border-danger focus:ring-danger"
 							)}
-							onclick={() => { hasCSRFToken = !hasCSRFToken; }}
+							onclick={() => hasCSRFToken = !hasCSRFToken}
 							aria-label="Toggle CSRF protection"
 						>
 							<span class={cn(
-								"absolute top-1 size-4 rounded-full bg-white transition-transform",
-								hasCSRFToken ? "translate-x-7" : "translate-x-1"
+								"absolute top-0.5 size-5 rounded-full bg-white shadow-md transition-transform duration-200",
+								hasCSRFToken ? "translate-x-7" : "translate-x-0.5"
 							)}></span>
 						</button>
 					</div>

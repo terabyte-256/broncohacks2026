@@ -25,6 +25,7 @@
 			<!DOCTYPE html>
 			<html>
 			<head>
+				<meta charset="UTF-8">
 				<style>
 					* { box-sizing: border-box; }
 					body { 
@@ -71,12 +72,22 @@
 						font-size: 13px;
 						color: #a1a1aa;
 					}
-					.comment { color: #6b7280; margin: 8px 0; }
+					.comment { 
+						color: #a1a1aa; 
+						margin: 8px 0; 
+						padding: 12px;
+						background: #18181b;
+						border-radius: 8px;
+						border: 1px solid #27272a;
+					}
 					h1, h2, h3 { color: #f4f4f5; margin: 0 0 12px 0; }
 					a { color: #22d3ee; }
+					img { max-width: 100%; }
 				</style>
+			</head>
+			<body>
 				<script>
-					// Intercept alert and send to parent
+					// Intercept alert and send to parent BEFORE any content loads
 					window.alert = function(msg) {
 						window.parent.postMessage({ type: 'sandbox-alert', message: String(msg) }, '*');
 					};
@@ -87,14 +98,27 @@
 						window.parent.postMessage({ type: 'sandbox-log', message: args.join(' ') }, '*');
 						originalLog.apply(console, args);
 					};
-				<\/script>
-			</head>
-			<body>${html}</body>
+					
+					// Also intercept onerror globally
+					window.onerror = function(msg) {
+						// Suppress image load errors but still let onerror handlers run
+						return false;
+					};
+				</script>
+				${html}
+			</body>
 			</html>
 		`;
 		
 		const blob = new Blob([sandboxContent], { type: 'text/html' });
-		iframeRef.src = URL.createObjectURL(blob);
+		const url = URL.createObjectURL(blob);
+		
+		// Clean up old blob URL
+		if (iframeRef.src && iframeRef.src.startsWith('blob:')) {
+			URL.revokeObjectURL(iframeRef.src);
+		}
+		
+		iframeRef.src = url;
 	}
 
 	function handleMessage(event: MessageEvent) {

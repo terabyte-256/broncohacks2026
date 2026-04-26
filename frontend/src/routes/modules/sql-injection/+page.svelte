@@ -153,18 +153,28 @@ db.execute(query, [username, password]);`;
 						<p class="mt-1 text-sm text-text-muted">Try SQL injection on a simulated login form</p>
 					</div>
 					<div class="flex items-center gap-3">
-						<span class="text-sm text-text-muted">Vulnerable Mode:</span>
+						<span class={cn(
+							"text-sm font-medium transition-colors",
+							isVulnerable ? "text-danger" : "text-success"
+						)}>
+							{isVulnerable ? 'Vulnerable' : 'Protected'}
+						</span>
 						<button 
+							type="button"
+							role="switch"
+							aria-checked={!isVulnerable}
 							class={cn(
-								"relative w-12 h-6 rounded-full transition-colors",
-								isVulnerable ? "bg-danger" : "bg-success"
+								"relative w-14 h-7 rounded-full transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-canvas",
+								isVulnerable 
+									? "bg-danger border-danger focus:ring-danger" 
+									: "bg-success border-success focus:ring-success"
 							)}
 							onclick={() => { isVulnerable = !isVulnerable; queryResult = null; }}
 							aria-label="Toggle vulnerable mode"
 						>
 							<span class={cn(
-								"absolute top-1 size-4 rounded-full bg-white transition-transform",
-								isVulnerable ? "translate-x-1" : "translate-x-7"
+								"absolute top-0.5 size-5 rounded-full bg-white shadow-md transition-transform duration-200",
+								isVulnerable ? "translate-x-0.5" : "translate-x-7"
 							)}></span>
 						</button>
 					</div>
