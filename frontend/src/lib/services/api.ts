@@ -123,15 +123,29 @@ body: payload
 });
 }
 
-export async function analyzeMessage(
-payload: AnalyzeMessageRequest,
-fetchFn?: typeof fetch
-): Promise<MessageAnalysis> {
-return request<MessageAnalysis>('/analyze-message', {
-fetchFn,
-method: 'POST',
-body: payload
-});
+export async function analyzeMessage({
+  message
+}: {
+  message: string;
+}): Promise<MessageAnalysis> {
+  const response = await fetch("/local-api/analyze-message", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ message }),
+  });
+
+  if (!response.ok) {
+    try {
+      const error = await response.json();
+      throw new Error(error?.message ?? "Failed to analyze message.");
+    } catch {
+      throw new Error("Failed to analyze message.");
+    }
+  }
+
+  return response.json();
 }
 
 export async function getMessageHistory(limit?: number, fetchFn?: typeof fetch): Promise<MessageHistoryResponse> {
