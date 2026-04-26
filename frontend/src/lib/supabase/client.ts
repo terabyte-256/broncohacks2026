@@ -12,8 +12,10 @@ export function createClient() {
 	supabaseClient = {
 		auth: {
 			signOut: async () => {
-				// Handled by backend
 				return { data: null, error: null };
+			},
+			onAuthStateChange: (_callback: unknown) => {
+				return { data: { subscription: { unsubscribe: () => {} } } };
 			}
 		}
 	};

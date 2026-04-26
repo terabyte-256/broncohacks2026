@@ -1,7 +1,6 @@
 import { env as publicEnv } from '$env/dynamic/public';
 
 import type {
-AnalyzeMessageRequest,
 DashboardData,
 MessageAnalysis,
 MessageHistoryResponse,
@@ -128,24 +127,10 @@ export async function analyzeMessage({
 }: {
   message: string;
 }): Promise<MessageAnalysis> {
-  const response = await fetch("/local-api/analyze-message", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ message }),
+  return request<MessageAnalysis>('/analyze-message', {
+    method: 'POST',
+    body: { message }
   });
-
-  if (!response.ok) {
-    try {
-      const error = await response.json();
-      throw new Error(error?.message ?? "Failed to analyze message.");
-    } catch {
-      throw new Error("Failed to analyze message.");
-    }
-  }
-
-  return response.json();
 }
 
 export async function getMessageHistory(limit?: number, fetchFn?: typeof fetch): Promise<MessageHistoryResponse> {
