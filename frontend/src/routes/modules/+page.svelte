@@ -180,12 +180,18 @@
 <div class={cn(uiTokens.pageWidth, "py-8")}>
 	<!-- Header -->
 	<header class="mb-8">
-		<a href="/" class="inline-flex items-center gap-2 text-sm text-text-muted hover:text-text transition-colors mb-4">
-			<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-			</svg>
-			Back to Dashboard
-		</a>
+		<div class="flex items-center gap-4 mb-4">
+			<a href="/" class="inline-flex items-center gap-2 text-sm text-text-muted hover:text-text transition-colors">
+				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+				</svg>
+				Dashboard
+			</a>
+			<span class="text-text-muted">/</span>
+			<a href="/tracks" class="text-sm text-text-muted hover:text-text transition-colors">
+				Learning Tracks
+			</a>
+		</div>
 		
 		<SectionHeader
 			title="Security Training Modules"

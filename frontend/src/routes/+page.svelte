@@ -117,74 +117,88 @@
 
 <!-- Track + checker cards -->
 <div class="mb-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-	<!-- Beginner Track -->
+	<!-- Everyday Security Track -->
 	<a
-		href="/tracks/beginner"
+		href="/tracks/everyday"
 		class="group block rounded-xl border border-border bg-surface p-5 shadow-sm transition-all hover:border-brand-border hover:shadow-md hover:-translate-y-0.5"
 	>
 		<div class="mb-3 flex items-center gap-3">
 			<div
-				class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-soft text-xl"
+				class="flex h-10 w-10 items-center justify-center rounded-lg bg-success-soft text-xl"
 			>
-				🎓
+				🛡️
 			</div>
 			<div>
-				<p class="font-semibold text-text">Beginner Track</p>
+				<p class="font-semibold text-text">Everyday Security</p>
 				<p class="text-xs text-text-muted">
-					Everyday threat awareness
+					For everyone - no tech skills needed
 				</p>
 			</div>
 		</div>
 		<p class="mb-4 text-sm text-text-muted">
-			Learn the basics and spot everyday online threats through quick
-			quizzes.
+			Protect yourself from common online threats with practical skills anyone can learn.
 		</p>
 		<p
-			class="mb-2 text-xs font-semibold uppercase tracking-widest text-brand"
+			class="mb-2 text-xs font-semibold uppercase tracking-widest text-success"
 		>
 			Categories
 		</p>
 		<div class="space-y-1.5">
-			{#each [['🎣', 'Phishing'], ['🧠', 'Social Engineering'], ['🔐', 'Auth & Passwords'], ['🍪', 'Sessions']] as [icon, label]}
-				<div
-					class="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2 text-sm text-text"
-				>
-					<div class="flex items-center gap-2">
-						<span>{icon}</span>
-						{label}
-					</div>
-					<span class="text-text-muted">›</span>
+			<div
+				class="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2 text-sm text-text"
+			>
+				<div class="flex items-center gap-2">
+					<span>🎣</span>
+					Phishing Attacks
 				</div>
-			{/each}
+				<span class="text-text-muted">›</span>
+			</div>
+			<div
+				class="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2 text-sm text-text"
+			>
+				<div class="flex items-center gap-2">
+					<span>🔐</span>
+					Password Security
+				</div>
+				<span class="text-text-muted">›</span>
+			</div>
+			<div
+				class="flex items-center justify-between rounded-lg border border-border bg-muted px-3 py-2 text-sm text-text opacity-60"
+			>
+				<div class="flex items-center gap-2">
+					<span>🎭</span>
+					Social Engineering
+				</div>
+				<span class="text-xs text-text-muted">Soon</span>
+			</div>
 		</div>
 		<div
-			class="mt-4 w-full rounded-lg bg-brand py-2.5 text-center text-sm font-semibold text-white transition-opacity group-hover:opacity-90"
+			class="mt-4 w-full rounded-lg bg-success py-2.5 text-center text-sm font-semibold text-white transition-opacity group-hover:opacity-90"
 		>
-			Start Beginner Track →
+			Start Everyday Security →
 		</div>
 	</a>
 
-	<!-- Developer Track -->
+	<!-- Developer Security Track -->
 	<a
 		href="/tracks/developer"
 		class="group block rounded-xl border border-border bg-surface p-5 shadow-sm transition-all hover:border-brand-border hover:shadow-md hover:-translate-y-0.5"
 	>
 		<div class="mb-3 flex items-center gap-3">
 			<div
-				class="flex h-10 w-10 items-center justify-center rounded-lg bg-info-soft text-xl"
+				class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-soft text-xl"
 			>
 				💻
 			</div>
 			<div>
-				<p class="font-semibold text-text">Developer Track</p>
+				<p class="font-semibold text-text">Developer Security</p>
 				<p class="text-xs text-text-muted">
-					Secure coding fundamentals
+					For developers building secure apps
 				</p>
 			</div>
 		</div>
 		<p class="mb-4 text-sm text-text-muted">
-			Explore real-world attack techniques and learn how to build secure
-			code.
+			Learn to build secure applications and protect against common web vulnerabilities.
 		</p>
 		<p
 			class="mb-2 text-xs font-semibold uppercase tracking-widest text-brand"
@@ -209,7 +223,7 @@
 			>
 				<div class="flex items-center gap-2">
 					<span
-						class="rounded bg-success-soft px-1.5 py-0.5 text-[10px] font-bold text-success"
+						class="rounded bg-warning-soft px-1.5 py-0.5 text-[10px] font-bold text-warning"
 						>SQLi</span
 					>
 					SQL Injection
@@ -221,7 +235,7 @@
 			>
 				<div class="flex items-center gap-2">
 					<span
-						class="rounded bg-warning-soft px-1.5 py-0.5 text-[10px] font-bold text-warning"
+						class="rounded bg-brand-soft px-1.5 py-0.5 text-[10px] font-bold text-brand"
 						>CSRF</span
 					>
 					Cross-Site Request Forgery
@@ -230,9 +244,9 @@
 			</div>
 		</div>
 		<div
-			class="mt-4 w-full rounded-lg bg-info py-2.5 text-center text-sm font-semibold text-white transition-opacity group-hover:opacity-90"
+			class="mt-4 w-full rounded-lg bg-brand py-2.5 text-center text-sm font-semibold text-white transition-opacity group-hover:opacity-90"
 		>
-			Start Developer Track →
+			Start Developer Security →
 		</div>
 	</a>
 
