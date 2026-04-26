@@ -76,7 +76,7 @@ required
 </form>
 </Card>
 
-<Card title="Analysis result">
+<Card title="Analysis result" description="Result from POST /api/analyze-message.">
 {#if $analysisState.status === 'idle'}
 <Alert variant="info">Run an analysis to see safety guidance.</Alert>
 {:else if $analysisState.status === 'loading'}
